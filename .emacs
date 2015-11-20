@@ -279,3 +279,26 @@ converted to PDF at the same location."
 ;; -------------------- Default Font --------------------
 ;; The same font as used in Github
 (set-face-attribute 'default t :font "Liberation Mono")
+
+
+;; -------------------- Changing icons for line continuation --------------------
+;; information is from 
+;; http://stackoverflow.com/questions/26824328/hide-change-emacs-fringe-bent-arrows-due-to-word-wrapping
+(define-fringe-bitmap 'right-curly-arrow
+  [#b00000000
+   #b00000010
+   #b00000110
+   #b00001110
+   #b00011110
+   #b00001110
+   #b00000110
+   #b00000010])
+(define-fringe-bitmap 'left-curly-arrow
+  [#b00000000
+   #b01000000
+   #b01100000
+   #b01110000
+   #b01111000
+   #b01110000
+   #b01100000
+   #b01000000])
