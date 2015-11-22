@@ -302,3 +302,9 @@ converted to PDF at the same location."
    #b01110000
    #b01100000
    #b01000000])
+
+
+;; -------------------- Hide-Show minor mode --------------------
+(global-set-key [f6] 'hs-minor-mode)
+(global-set-key [f7] 'hs-hide-block)		
+(global-set-key [f8] 'hs-show-block)
