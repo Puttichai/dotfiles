@@ -308,3 +308,11 @@ converted to PDF at the same location."
 (global-set-key [f6] 'hs-minor-mode)
 (global-set-key [f7] 'hs-hide-block)		
 (global-set-key [f8] 'hs-show-block)
+
+
+;; -------------------- Configuring the Scratch's buffer mode --------------------
+(setq initial-major-mode 'python-mode)
+(setq initial-scratch-message "\
+# This buffer is for notes you don't want to save, and for Python code.
+# If you want to create a file, visit that file with C-x C-f or f3, 
+# then enter the text in that file's own buffer.")
