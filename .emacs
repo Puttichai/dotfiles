@@ -49,9 +49,9 @@
   ;; If there is more than one, they won't work right.
  '(font-latex-subscript-face ((t nil)))
  '(font-latex-superscript-face ((t nil)))
- '(linum ((t (:background "#323232" :foreground "#7DDC1F" :weight bold))))
+ '(linum ((t (:background "#191919" :foreground "#7DDC1F" :weight bold))))
  '(tabbar-default ((t (:background "#666666" :foreground "#7DDC1F" :weight bold))))
- '(tabbar-selected ((t (:inherit tabbar-default :background "#323232")))))
+ '(tabbar-selected ((t (:inherit tabbar-default :background "#191919")))))
 (setq tabbar-background-color "#666666")
 
 (defun tabbar-buffer-groups ()
@@ -104,7 +104,6 @@ Return a list of one element based on major mode."
 
 ;; Set Keys for navigating between tabs
 (global-set-key [M-left] 'tabbar-backward-tab)
-
 (global-set-key [M-right] 'tabbar-forward-tab)
 
 
@@ -315,4 +314,20 @@ converted to PDF at the same location."
 (setq initial-scratch-message "\
 # This buffer is for notes you don't want to save, and for Python code.
 # If you want to create a file, visit that file with C-x C-f or f3, 
-# then enter the text in that file's own buffer.")
+# then enter the text in that file's own buffer.
+
+# Here are some useful snippets.
+\"\"\"
+import openravepy as orpy
+env = orpy.Environment()
+env.SetViewer('qtcoin')
+
+\"\"\"")
+
+
+;; ;; -------------------- CEDET --------------------
+;; (load-file "~/cedet-1.1/common/cedet.el")
+
+;; ;; -------------------- Emacs Code Browser (ECB) --------------------
+;; (add-to-list 'load-path "~/ecb-2.40")
+;; (require 'ecb-autoloads)
