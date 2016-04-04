@@ -321,6 +321,8 @@ converted to PDF at the same location."
 import openravepy as orpy
 env = orpy.Environment()
 env.SetViewer('qtcoin')
+collisionchecker = orpy.RaveCreateCollisionChecker(env, 'ode')
+env.SetCollisionChecker(collisionchecker)
 
 \"\"\"")
 
