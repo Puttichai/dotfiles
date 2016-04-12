@@ -317,14 +317,13 @@ converted to PDF at the same location."
 # then enter the text in that file's own buffer.
 
 # Here are some useful snippets.
-\"\"\"
+
 import openravepy as orpy
 env = orpy.Environment()
 env.SetViewer('qtcoin')
 collisionchecker = orpy.RaveCreateCollisionChecker(env, 'ode')
 env.SetCollisionChecker(collisionchecker)
-
-\"\"\"")
+")
 
 
 ;; ;; -------------------- CEDET --------------------
