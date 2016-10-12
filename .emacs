@@ -4,6 +4,7 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
  '(font-latex-fontify-sectioning 1.05 t)
  '(inhibit-startup-screen t)
  '(initial-frame-alist (quote ((fullscreen . maximized))))
@@ -47,6 +48,8 @@
   ;; If you edit it by hand, you could mess it up, so be careful.
   ;; Your init file should contain only one such instance.
   ;; If there is more than one, they won't work right.
+ '(default ((t (:inherit nil :stipple nil :background "#191919" :foreground "#FFFFFF" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :foundry "unknown" :family "Liberation Mono"))))
+ '(bm-persistent-face ((t (:background "green yellow" :foreground "black" :weight extra-bold))))
  '(font-latex-subscript-face ((t nil)))
  '(font-latex-superscript-face ((t nil)))
  '(linum ((t (:background "#191919" :foreground "#7DDC1F" :weight bold))))
@@ -211,6 +214,8 @@ Return a list of one element based on major mode."
    ;; company's project for ttag
    ((my-project-name-contains-substring "/catkin_ws/")
     (my-ros-python-code-style))
+   ((my-project-name-contains-substring "/git/bimanual/")
+    (my-ros-python-code-style))
    ((my-project-name-contains-substring "/git/cri1/")
     (my-personal-python-code-style))
   )
@@ -332,3 +337,88 @@ env.SetCollisionChecker(collisionchecker)
 ;; ;; -------------------- Emacs Code Browser (ECB) --------------------
 ;; (add-to-list 'load-path "~/ecb-2.40")
 ;; (require 'ecb-autoloads)
+
+;------------------------------------------------------------------------------------------
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
+;; Line spacing
+(setq-default line-spacing 0.1)
+
+
+; visual bookmarks
+(autoload 'bm-toggle   "bm" "Toggle bookmark in current buffer." t)
+(autoload 'bm-next     "bm" "Goto bookmark."                     t)
+(autoload 'bm-previous "bm" "Goto previous bookmark."            t)
+
+(global-set-key (kbd "<C-f2>") 'bm-toggle)
+(global-set-key (kbd "<f2>")   'bm-next)
+(global-set-key (kbd "<S-f2>") 'bm-previous)
+
+
+;; make bookmarks persistent as default
+(setq-default bm-buffer-persistence t)
+
+;; Make sure the repository is loaded as early as possible
+;(setq bm-restore-repository-on-load t)
+(require 'bm)
+
+;; Loading the repository from file when on start up.
+(add-hook 'after-init-hook 'bm-repository-load)
+
+;; Restoring bookmarks when on file find.
+(add-hook 'find-file-hooks 'bm-buffer-restore)
+
+;; Saving bookmark data on killing a buffer
+(add-hook 'kill-buffer-hook 'bm-buffer-save)
+
+;; Saving the repository to file when on exit.
+;; kill-buffer-hook is not called when emacs is killed, so we
+;; must save all bookmarks first.
+;; (add-hook 'kill-emacs-hook '(lambda nil
+;;                               (bm-buffer-save-all)
+;;                               (bm-repository-save)))
+
+;; Update bookmark repository when saving the file.
+;(add-hook 'after-save-hook 'bm-buffer-save)
+
+;; Restore bookmarks when buffer is reverted.
+(add-hook 'after-revert-hook 'bm-buffer-restore)
+
+; smoother scrolling
+(setq scroll-step 1)
+(setq scroll-conservatively 50)
+(setq scroll-preserve-screen-position nil)
+(defun scroll-down-keep-cursor ()
+   ;; Scroll the text one line down while keeping the cursor
+  (interactive)
+  (scroll-down 1))
+
+(defun scroll-up-keep-cursor ()
+   ;; Scroll the text one line up while keeping the cursor
+  (interactive)
+  (scroll-up 1))
+
+(global-set-key (kbd "<C-down>") 'scroll-up-keep-cursor)
+(global-set-key (kbd "<C-up>") 'scroll-down-keep-cursor)
+(global-set-key (kbd "C-M-g") 'goto-line)
+
+;; M-n and M-p
+(global-unset-key "\M-p")
+(global-unset-key "\M-n")
+
+(defun scroll-up-in-place (n)
+  (interactive "p")
+  (previous-line n)
+  (scroll-down n))
+
+
+(defun scroll-down-in-place (n)
+  (interactive "p")
+  (next-line n)
+  (scroll-up n))
+
+(global-set-key "\M-n" 'scroll-down-in-place)
+(global-set-key "\M-p" 'scroll-up-in-place)
+
+; Fill column
+(setq default-fill-column 100)
