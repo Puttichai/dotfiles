@@ -26,6 +26,7 @@ alias cd_catkin="cd ~/catkin_ws/src"
 alias cd_denso_ros="cd ~/catkin_ws/src/denso_ros"
 
 alias denso_home="roslaunch denso_manipulation move_home_position.launch"
+alias denso_fake="roslaunch denso_control denso_fake_controller.launch robot_name:=denso"
 alias denso_fake_left="roslaunch denso_control denso_fake_controller.launch robot_name:=left"
 alias denso_fake_right="roslaunch denso_control denso_fake_controller.launch robot_name:=right"
 alias denso_left_rrt="roslaunch denso_control denso_rrt_controller.launch robot_name:=left denso_address:=192.168.0.11 netft_address:=192.168.0.12"
