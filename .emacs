@@ -1,9 +1,12 @@
+;------------------------------------------------------------------------------------------
+(add-to-list 'load-path "~/.emacs.d/lisp/")
+
 ;; -------------------- Full Screen Mode --------------------
 (custom-set-variables
-  ;; custom-set-variables was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(font-latex-fontify-sectioning 1.05 t)
  '(inhibit-startup-screen t)
@@ -40,66 +43,68 @@
 ;; -------------------- Tabbar --------------------
 ;; Turn on tabbar
 (require 'tabbar)
-(tabbar-mode t)
 
 ;; Set colors
 (custom-set-faces
-  ;; custom-set-faces was added by Custom.
-  ;; If you edit it by hand, you could mess it up, so be careful.
-  ;; Your init file should contain only one such instance.
-  ;; If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#191919" :foreground "#FFFFFF" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :foundry "unknown" :family "Liberation Mono"))))
  '(bm-persistent-face ((t (:background "green yellow" :foreground "black" :weight extra-bold))))
  '(font-latex-subscript-face ((t nil)))
  '(font-latex-superscript-face ((t nil)))
  '(linum ((t (:background "#191919" :foreground "#7DDC1F" :weight bold))))
  '(tabbar-default ((t (:background "#666666" :foreground "#7DDC1F" :weight bold))))
+ '(tabbar-default-face ((t (:inherit variable-pitch :background "gray72" :foreground "red" :height 1.0 :family "Liberation Mono"))))
  '(tabbar-selected ((t (:inherit tabbar-default :background "#191919")))))
 (setq tabbar-background-color "#666666")
 
-(defun tabbar-buffer-groups ()
-  "Return the list of group names the current buffer belongs to.
-Return a list of one element based on major mode."
-  (list
-   (cond
-    ((or (get-buffer-process (current-buffer))
-         ;; Check if the major mode derives from `comint-mode' or
-         ;; `compilation-mode'.
-         (tabbar-buffer-mode-derived-p
-          major-mode '(comint-mode compilation-mode)))
-     "Process"
-     )
-    ;; ((member (buffer-name)
-    ;;          '("*scratch*" "*Messages*"))
-    ;;  "Common"
-    ;;  )
-    ((string-equal "*" (substring (buffer-name) 0 1))
-     "Common"
-     )
-    ((eq major-mode 'dired-mode)
-     "Dired"
-     )
-    ((memq major-mode
-           '(help-mode apropos-mode Info-mode Man-mode))
-     "Help"
-     )
-    ((memq major-mode
-           '(rmail-mode
-             rmail-edit-mode vm-summary-mode vm-mode mail-mode
-             mh-letter-mode mh-show-mode mh-folder-mode
-             gnus-summary-mode message-mode gnus-group-mode
-             gnus-article-mode score-mode gnus-browse-killed-mode))
-     "Mail"
-     )
-    (t
-     ;; Return `mode-name' if not blank, `major-mode' otherwise.
-     (if (and (stringp mode-name)
-              ;; Take care of preserving the match-data because this
-              ;; function is called when updating the header line.
-              (save-match-data (string-match "[^ ]" mode-name)))
-         mode-name
-       (symbol-name major-mode))
-     ))))
+(tabbar-mode 1)
+
+;; (defun tabbar-buffer-groups ()
+;;   "Return the list of group names the current buffer belongs to.
+;; Return a list of one element based on major mode."
+;;   (list
+;;    (cond
+;;     ((or (get-buffer-process (current-buffer))
+;;          ;; Check if the major mode derives from `comint-mode' or
+;;          ;; `compilation-mode'.
+;;          (tabbar-buffer-mode-derived-p
+;;           major-mode '(comint-mode compilation-mode)))
+;;      "Process"
+;;      )
+;;     ;; ((member (buffer-name)
+;;     ;;          '("*scratch*" "*Messages*"))
+;;     ;;  "Common"
+;;     ;;  )
+;;     ((string-equal "*" (substring (buffer-name) 0 1))
+;;      "Common"
+;;      )
+;;     ((eq major-mode 'dired-mode)
+;;      "Dired"
+;;      )
+;;     ((memq major-mode
+;;            '(help-mode apropos-mode Info-mode Man-mode))
+;;      "Help"
+;;      )
+;;     ((memq major-mode
+;;            '(rmail-mode
+;;              rmail-edit-mode vm-summary-mode vm-mode mail-mode
+;;              mh-letter-mode mh-show-mode mh-folder-mode
+;;              gnus-summary-mode message-mode gnus-group-mode
+;;              gnus-article-mode score-mode gnus-browse-killed-mode))
+;;      "Mail"
+;;      )
+;;     (t
+;;      ;; Return `mode-name' if not blank, `major-mode' otherwise.
+;;      (if (and (stringp mode-name)
+;;               ;; Take care of preserving the match-data because this
+;;               ;; function is called when updating the header line.
+;;               (save-match-data (string-match "[^ ]" mode-name)))
+;;          mode-name
+;;        (symbol-name major-mode))
+;;      ))))
 
 ;; Set Keys for navigating betweeb groups
 (global-set-key [M-up] 'tabbar-backward-group)
@@ -119,7 +124,7 @@ Return a list of one element based on major mode."
 (global-linum-mode 1)
 
 ;; ------------------------- AucTeX -------------------------
-(load "auctex.el" nil t t)
+; (load "auctex.el" nil t t)
 
 ;; Fix AucTeX LaTeX syntax
 (setq font-latex-fontify-sectioning 'color)
@@ -338,8 +343,6 @@ env.SetCollisionChecker(collisionchecker)
 ;; (add-to-list 'load-path "~/ecb-2.40")
 ;; (require 'ecb-autoloads)
 
-;------------------------------------------------------------------------------------------
-(add-to-list 'load-path "~/.emacs.d/lisp/")
 
 ;; Line spacing
 (setq-default line-spacing 0.1)
@@ -420,5 +423,26 @@ env.SetCollisionChecker(collisionchecker)
 (global-set-key "\M-n" 'scroll-down-in-place)
 (global-set-key "\M-p" 'scroll-up-in-place)
 
-; Fill column
-(setq default-fill-column 100)
+;; Fill column
+;; (setq default-fill-column 90)
+;; (add-hook 'latex-mode-hook '(setq default-fill-column 70))
+
+;; (add-hook 'latex-mode-hook (lambda () (set-fill-column 70)))
+;; (add-hook 'python-mode-hook (lambda () (set-fill-column 70)))
+
+(defun customize-fill-column-width ()
+  (interactive)
+  (if (my-project-name-contains-substring ".tex")
+      (add-hook 'latex-mode-hook (lambda () (set-fill-column 70)))
+    (setq default-fill-column 90)
+    )
+  )
+
+
+
+; Fix to AucTEX
+(require 'cl)
+
+; Change default font for Thai
+(set-fontset-font "fontset-default" 'thai (font-spec :family "TH Sarabun New" :size 20))
+
