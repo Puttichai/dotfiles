@@ -1,5 +1,6 @@
 ;------------------------------------------------------------------------------------------
 (add-to-list 'load-path "~/.emacs.d/lisp/")
+(add-to-list 'load-path "/usr/share/emacs25/site-lisp/emacs-goodies-el/")
 
 ;; -------------------- Full Screen Mode --------------------
 (custom-set-variables
@@ -62,50 +63,6 @@
 
 (tabbar-mode 1)
 
-;; (defun tabbar-buffer-groups ()
-;;   "Return the list of group names the current buffer belongs to.
-;; Return a list of one element based on major mode."
-;;   (list
-;;    (cond
-;;     ((or (get-buffer-process (current-buffer))
-;;          ;; Check if the major mode derives from `comint-mode' or
-;;          ;; `compilation-mode'.
-;;          (tabbar-buffer-mode-derived-p
-;;           major-mode '(comint-mode compilation-mode)))
-;;      "Process"
-;;      )
-;;     ;; ((member (buffer-name)
-;;     ;;          '("*scratch*" "*Messages*"))
-;;     ;;  "Common"
-;;     ;;  )
-;;     ((string-equal "*" (substring (buffer-name) 0 1))
-;;      "Common"
-;;      )
-;;     ((eq major-mode 'dired-mode)
-;;      "Dired"
-;;      )
-;;     ((memq major-mode
-;;            '(help-mode apropos-mode Info-mode Man-mode))
-;;      "Help"
-;;      )
-;;     ((memq major-mode
-;;            '(rmail-mode
-;;              rmail-edit-mode vm-summary-mode vm-mode mail-mode
-;;              mh-letter-mode mh-show-mode mh-folder-mode
-;;              gnus-summary-mode message-mode gnus-group-mode
-;;              gnus-article-mode score-mode gnus-browse-killed-mode))
-;;      "Mail"
-;;      )
-;;     (t
-;;      ;; Return `mode-name' if not blank, `major-mode' otherwise.
-;;      (if (and (stringp mode-name)
-;;               ;; Take care of preserving the match-data because this
-;;               ;; function is called when updating the header line.
-;;               (save-match-data (string-match "[^ ]" mode-name)))
-;;          mode-name
-;;        (symbol-name major-mode))
-;;      ))))
-
 ;; Set Keys for navigating betweeb groups
 (global-set-key [M-up] 'tabbar-backward-group)
 (global-set-key [M-down] 'tabbar-forward-group)
@@ -117,7 +74,6 @@
 
 ;; -------------------- Set Print to PS Shortcut --------------------
 (global-set-key [M-p] 'ps-spool-buffer)
-
 
 ;; -------------------- Line Numbers --------------------
 (require 'linum)
@@ -170,7 +126,32 @@
 
 
 
-;;(require 'uncrustify)
+(require 'uncrustify)
+(setq uncrustify-args "-l CPP --replace")
+(defun my-uncrustify-hook ()
+;  (setq uncrustify-uncrustify-on-save t)
+;  (add-hook 'uncrustify-init-hooks 'bm-buffer-save)
+;  (add-hook 'uncrustify-finish-hooks 'bm-buffer-restore)
+;; (message "adding kill hook")
+;; (make-local-variable 'kill-buffer-hook)
+;; (add-hook 'kill-buffer-hook '(lambda()
+;; (interactive)
+;; (let* ((uncrustify-current-line (line-number-at-pos)))
+;; (save-excursion
+;; (message "why sadfasdf")
+;; (uncrustify-impl (point-min) (point-max)))
+;; (goto-char (point-min)) (forward-line (1- uncrustify-current-line)))))
+;; (message "kill hook added")
+  (global-set-key (kbd "C-M-]") 'uncrustify)
+  (global-set-key (kbd "C-M-\\") 'uncrustify-buffer)
+)
+
+; add uncrustify only if ~/.uncrustify.cfg exists
+(when (file-readable-p "~/.uncrustify.cfg")
+  (add-hook 'c++-mode-hook 'my-uncrustify-hook)
+;;  (add-hook 'c-mode-hook 'my-uncrustify-hook)
+)
+
 
 ;; -------------------- Pane Management --------------------
 ;; Focus-follow mouse
@@ -280,10 +261,6 @@ converted to PDF at the same location."
 
 (setq LaTeX-command-style '(("" "%(PDF)%(latex) -file-line-error %S%(PDFout)")))
 
-;; -------------------- PDDL codes --------------------
-;; (require 'pddl-mode)
-;; use pddl-mode for all file with .pddl
-;; (add-to-list 'auto-mode-alist '("\\.pddl\\'" . PDDL-mode))
 
 ;; -------------------- Default Font --------------------
 ;; The same font as used in Github
@@ -321,27 +298,7 @@ converted to PDF at the same location."
 
 ;; -------------------- Configuring the Scratch's buffer mode --------------------
 (setq initial-major-mode 'python-mode)
-(setq initial-scratch-message "\
-# This buffer is for notes you don't want to save, and for Python code.
-# If you want to create a file, visit that file with C-x C-f or f3, 
-# then enter the text in that file's own buffer.
-
-# Here are some useful snippets.
-
-import openravepy as orpy
-env = orpy.Environment()
-env.SetViewer('qtcoin')
-collisionchecker = orpy.RaveCreateCollisionChecker(env, 'ode')
-env.SetCollisionChecker(collisionchecker)
-")
-
-
-;; ;; -------------------- CEDET --------------------
-;; (load-file "~/cedet-1.1/common/cedet.el")
-
-;; ;; -------------------- Emacs Code Browser (ECB) --------------------
-;; (add-to-list 'load-path "~/ecb-2.40")
-;; (require 'ecb-autoloads)
+(setq initial-scratch-message "")
 
 
 ;; Line spacing
@@ -359,7 +316,7 @@ env.SetCollisionChecker(collisionchecker)
 
 
 ;; make bookmarks persistent as default
-(setq-default bm-buffer-persistence t)
+(setq bm-buffer-persistence 1)
 
 ;; Make sure the repository is loaded as early as possible
 ;(setq bm-restore-repository-on-load t)
@@ -438,11 +395,43 @@ env.SetCollisionChecker(collisionchecker)
     )
   )
 
-
-
 ; Fix to AucTEX
 (require 'cl)
 
 ; Change default font for Thai
 (set-fontset-font "fontset-default" 'thai (font-spec :family "TH Sarabun New" :size 20))
 
+;; This stuff is copied from Rosen's .emacs file.
+;; Open files and goto lines like we see from g++ etc. i.e. file:line#
+;; (to-do "make `find-file-line-number' work for emacsclient as well")
+;; (to-do "make `find-file-line-number' check if the file exists")
+(defadvice find-file (around find-file-line-number
+                             (filename &optional wildcards)
+                             activate)
+  "Turn files like file.cpp:14 into file.cpp and going to the 14-th line."
+  (save-match-data
+    (let* ((matched (string-match "^\\(.*\\):\\([0-9]+\\):?$" filename))
+           (line-number (and matched
+                             (match-string 2 filename)
+                             (string-to-number (match-string 2 filename))))
+           (filename (if matched (match-string 1 filename) filename)))
+      ad-do-it
+      (when line-number
+        ;; goto-line is for interactive use
+        (goto-char (point-min))
+        (forward-line (1- line-number))))))
+
+;; anzu
+(require 'anzu)
+(global-anzu-mode +1)
+
+;;
+(add-to-list 'auto-mode-alist '("\\.cpp'" . c++-mode))
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
+;; Display ANSI colors. Do M-x display-ansi-colors
+(require 'ansi-color)
+(defun display-ansi-colors ()
+  (interactive)
+  (let ((inhibit-read-only t))
+    (ansi-color-apply-on-region (point-min) (point-max))))
