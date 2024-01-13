@@ -51,7 +51,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#191919" :foreground "#FFFFFF" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 90 :width normal :foundry "unknown" :family "Liberation Mono"))))
+ '(default ((t (:inherit nil :stipple nil :background "#191919" :foreground "#FFFFFF" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 113 :width normal :foundry "1ASC" :family "Liberation Mono"))))
  '(bm-persistent-face ((t (:background "green yellow" :foreground "black" :weight extra-bold))))
  '(font-latex-subscript-face ((t nil)))
  '(font-latex-superscript-face ((t nil)))
@@ -126,25 +126,25 @@
 
 
 
-(require 'uncrustify)
-(setq uncrustify-args "-l CPP --replace")
-(defun my-uncrustify-hook ()
-;  (setq uncrustify-uncrustify-on-save t)
-;  (add-hook 'uncrustify-init-hooks 'bm-buffer-save)
-;  (add-hook 'uncrustify-finish-hooks 'bm-buffer-restore)
-;; (message "adding kill hook")
-;; (make-local-variable 'kill-buffer-hook)
-;; (add-hook 'kill-buffer-hook '(lambda()
-;; (interactive)
-;; (let* ((uncrustify-current-line (line-number-at-pos)))
-;; (save-excursion
-;; (message "why sadfasdf")
-;; (uncrustify-impl (point-min) (point-max)))
-;; (goto-char (point-min)) (forward-line (1- uncrustify-current-line)))))
-;; (message "kill hook added")
-  (global-set-key (kbd "C-M-]") 'uncrustify)
-  (global-set-key (kbd "C-M-\\") 'uncrustify-buffer)
-)
+;; (require 'uncrustify)
+;; (setq uncrustify-args "-l CPP --replace")
+;; (defun my-uncrustify-hook ()
+;; ;  (setq uncrustify-uncrustify-on-save t)
+;; ;  (add-hook 'uncrustify-init-hooks 'bm-buffer-save)
+;; ;  (add-hook 'uncrustify-finish-hooks 'bm-buffer-restore)
+;; ;; (message "adding kill hook")
+;; ;; (make-local-variable 'kill-buffer-hook)
+;; ;; (add-hook 'kill-buffer-hook '(lambda()
+;; ;; (interactive)
+;; ;; (let* ((uncrustify-current-line (line-number-at-pos)))
+;; ;; (save-excursion
+;; ;; (message "why sadfasdf")
+;; ;; (uncrustify-impl (point-min) (point-max)))
+;; ;; (goto-char (point-min)) (forward-line (1- uncrustify-current-line)))))
+;; ;; (message "kill hook added")
+;;   (global-set-key (kbd "C-M-]") 'uncrustify)
+;;   (global-set-key (kbd "C-M-\\") 'uncrustify-buffer)
+;; )
 
 ; add uncrustify only if ~/.uncrustify.cfg exists
 (when (file-readable-p "~/.uncrustify.cfg")
@@ -264,8 +264,10 @@ converted to PDF at the same location."
 
 ;; -------------------- Default Font --------------------
 ;; The same font as used in Github
-(set-face-attribute 'default t :font "Liberation Mono")
-
+; (set-face-attribute 'default t :font "Liberation Mono")
+(set-face-attribute 'default t :font "Jetbrains Mono NL Medium")
+;; See also https://stackoverflow.com/a/296316
+(set-face-attribute 'default nil :height 105)
 
 ;; -------------------- Changing icons for line continuation --------------------
 ;; information is from 
@@ -421,9 +423,9 @@ converted to PDF at the same location."
         (goto-char (point-min))
         (forward-line (1- line-number))))))
 
-;; anzu
-(require 'anzu)
-(global-anzu-mode +1)
+;; ;; anzu
+;; (require 'anzu)
+;; (global-anzu-mode +1)
 
 ;;
 (add-to-list 'auto-mode-alist '("\\.cpp'" . c++-mode))
@@ -464,3 +466,15 @@ converted to PDF at the same location."
 
 (setq-default c-basic-offset 4)
 (setq-default tab-width 4)
+
+;; disable beep sounds
+(setq ring-bell-function 'ignore)
+
+(require 'julia-mode)
+
+;; -------------------- React codes --------------------
+(setq auto-mode-alist
+      (cons
+       '("\\.js$" . js-jsx-mode)
+       auto-mode-alist))
+(setq create-lockfiles nil)
